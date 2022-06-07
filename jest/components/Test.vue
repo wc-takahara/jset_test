@@ -1,6 +1,6 @@
 <!-- Please remove this file from your project -->
 <template>
-  <div>{{test}}</div>
+  <div id="progress">{{test}}</div>
 </template>
 
 <script>
@@ -9,6 +9,7 @@ export default {
   props: {
     test: {
       type: String,
+      default: "デフォルト"
     }
   },
 }

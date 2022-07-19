@@ -1,5 +1,8 @@
 import { mount } from '@vue/test-utils'
 import Test from '@/components/Test.vue'
+import Timer from '@/components/Timer.vue'
+
+const yearEnd = 
 
 describe('Test', () => {
   test('propsデータをしっかりと渡しているかの確認', () => {
@@ -36,10 +39,20 @@ describe('Test3', () => {
 })
 
 describe('TimerTest',() => {
-  test('timer',() =>{
-    const mocked =  jest.useFakeTimers('modern').setSystemTime(new Date('2022-01-03 12:00:00'))
-    const day = new Date().getDate()
-    expect(day).toBe(3);
+  test('冬のtimer',() =>{
+    jest.useFakeTimers('modern').setSystemTime(new Date('2022-12-03 12:00:00'))
+    const wrapper = mount(Timer);
+    const lead = wrapper.get('.season')
+    expect(lead.text()).toBe('冬ですか…')
+  })
+})
+
+describe('TimerTest',() => {
+  test('夏のtimer',() =>{
+    jest.useFakeTimers('modern').setSystemTime(new Date('2022-06-03 11:00:00'))
+    const wrapper = mount(Timer);
+    const lead = wrapper.get('.season')
+    expect(lead.text()).toBe('夏ですね～')
   })
 })
 

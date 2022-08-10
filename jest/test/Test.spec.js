@@ -1,8 +1,16 @@
-import { mount } from '@vue/test-utils'
+import { shallowMount,createLocalVue, mount } from '@vue/test-utils'
 import Test from '@/components/Test.vue'
 import Timer from '@/components/Timer.vue'
+const index = require('../store/index')
+const Vuex = require('vuex')
 
-const yearEnd = 
+var _cookie = {
+  
+}
+
+//NOTE: Vuexを使う際にグローバルのVueと切り離し他ページに影響をださないため
+const localVue =  createLocalVue();
+localVue.use(Vuex)
 
 describe('Test', () => {
   test('propsデータをしっかりと渡しているかの確認', () => {
@@ -54,5 +62,17 @@ describe('TimerTest',() => {
     const lead = wrapper.get('.season')
     expect(lead.text()).toBe('夏ですね～')
   })
+})
+
+describe('Storeのテスト',() => {
+    let store
+    beforeEach(() => {
+      store = new Vuex.Store(index)
+    })
+
+    test('check cookie',() =>{
+      expect(store.getters['double']).toBe(2)
+      expect(store.state.count).toBe(1)
+    })
 })
 

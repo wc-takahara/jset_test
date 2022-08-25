@@ -1,7 +1,9 @@
 import { shallowMount,createLocalVue, mount } from '@vue/test-utils'
 import Test from '@/components/Test.vue'
 import Timer from '@/components/Timer.vue'
-const index = require('../store/index')
+import PageTest from '../../pages/test/index.vue'
+import VueMeta from 'vue-meta'
+const index = require('../../store/index')
 const Vuex = require('vuex')
 
 var _cookie = {
@@ -11,6 +13,7 @@ var _cookie = {
 //NOTE: Vuexを使う際にグローバルのVueと切り離し他ページに影響をださないため
 const localVue =  createLocalVue();
 localVue.use(Vuex)
+localVue.use(VueMeta, { keyName: 'head' })
 
 describe('Test', () => {
   test('propsデータをしっかりと渡しているかの確認', () => {
@@ -73,6 +76,28 @@ describe('Storeのテスト',() => {
     test('check cookie',() =>{
       expect(store.getters['double']).toBe(2)
       expect(store.state.count).toBe(1)
+    })
+})
+
+describe('validateのテスト',() => {
+    let store
+    let wrapper
+    beforeEach(() => {
+      store = new Vuex.Store(index)
+      store.state.count = 2
+      wrapper = shallowMount(PageTest,{
+        localVue
+      });
+    })
+
+    test('check validate',async() =>{
+      console.log(wrapper.vm)
+      await expect(wrapper.validate({store:store})).toBe(false);
+
+      // const title = await wrapper.vm.$metaInfo.title;
+      // console.log(store.state.count)
+      // console.log(title)
+      // expect(titleData).toBe('test-title')
     })
 })
 
